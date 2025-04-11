@@ -16,7 +16,7 @@ export default function EventDetails() {
       id: '1',
       title: 'Tech Conference 2024',
       date: new Date('2024-03-15T09:00:00'),
-      location: 'UNiversity Of Zimbabwe- Innovation Hub',
+      location: 'University Of Zimbabwe- Innovation Hub',
       description: 'Join us for the biggest tech conference of the year! Featuring keynote speakers from leading tech companies, workshops, networking sessions, and the latest in technology trends. This event brings together developers, designers, and tech enthusiasts from around the world.',
       imageUrl: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3',
       organizer: 'Tech Events Inc.',
