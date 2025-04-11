@@ -10,13 +10,13 @@ export default function Home() {
     const upcomingEvents = [{
         title: 'Tech Conference 2024',
         date: new Date('2024-03-15T09:00:00'),
-        location: 'San Francisco, CA',
+        location: 'National Sports Stadium, HRE',
         description: 'Annual technology conference featuring industry leaders.',
         imageUrl: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3'
       }, {
         title: 'Music Festival',
         date: new Date('2024-04-20T15:00:00'),
-        location: 'Austin, TX',
+        location: 'Harare Sports Center, HRE',
         description: 'Three-day music festival with top artists.',
         imageUrl: 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?ixlib=rb-4.0.3'
       }];

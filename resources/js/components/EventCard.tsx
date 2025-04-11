@@ -23,11 +23,11 @@ export function EventCard({
         <div className="mt-2 space-y-2">
           <div className="flex items-center text-gray-600">
             <Calendar className="h-5 w-5 mr-2" />
-            <span>{/*format(date, 'MMMM d, yyyy')*/}</span>
+            <span>{ `${date.getFullYear()}-${date.getMonth().toString().padStart(2,'0')}-${date.getDate().toString().padStart(2,'0')}` /*format(date, 'MMMM d, yyyy')*/}</span>
           </div>
           <div className="flex items-center text-gray-600">
             <Clock className="h-5 w-5 mr-2" />
-            <span>ddd</span>
+            <span>{`${date.getHours().toString().padStart(2,'0')}:${date.getMinutes().toString().padStart(2,'0')}`}</span>
           </div>
           <div className="flex items-center text-gray-600">
             <MapPin className="h-5 w-5 mr-2" />
