@@ -15,6 +15,10 @@ Route::get('/event/create', function () {
     return Inertia::render('EventForm');
 })->name('event-create');
 
+Route::get('/event/detail', function () {
+    return Inertia::render('EventDetails');
+})->name('event-details');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
