@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class event extends Model
+class Event extends Model
 {
-    public function Registration()
-    {
-        return $this->hasMany(Registration::class);
-    }
-   
-    
+    use HasFactory; 
+    protected $fillable = [
+        'name',
+        'date',
+        'location'
+    ];
 }
