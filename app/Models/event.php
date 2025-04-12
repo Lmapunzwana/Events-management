@@ -13,4 +13,15 @@ class Event extends Model
         'date',
         'location'
     ];
+
+    //Reltaionship to other models
+    public function registrations()
+    {
+        return $this->hasMany(Registration::class);
+    }
+
+    public function participants()
+    {
+        return $this->belongsToMany(User::class, 'registrations');
+    }
 }
