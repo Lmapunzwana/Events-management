@@ -38,17 +38,17 @@ export default function Dashboard() {
             imageUrl: 'https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3',
             isRegistered: true
         },
-        // Add more events here
+        
     ];
 
-    // Filter events based on search query
+
     const filteredEvents = allEvents.filter(event =>
         event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         event.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
         event.description.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    // Calculate pagination
+    
     const totalPages = Math.ceil(filteredEvents.length / eventsPerPage);
     const startIndex = (currentPage - 1) * eventsPerPage;
     const paginatedEvents = filteredEvents.slice(startIndex, startIndex + eventsPerPage);
@@ -75,7 +75,7 @@ export default function Dashboard() {
                     })}
                 </div>
 
-                {/* Search and Create Event Section */}
+                
                 <div className="flex flex-col sm:flex-row gap-4 justify-between items-center">
                     <div className="relative w-full sm:w-96">
                         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
