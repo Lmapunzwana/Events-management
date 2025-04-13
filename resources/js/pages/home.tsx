@@ -61,11 +61,7 @@ export default function Home() {
                 </header>
                 <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Your Dashboard</h1>
-        <Link href="/event/create" className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
-          <PlusIcon className="h-5 w-5 mr-2" />
-          Create Event
-        </Link>
+        <h1 className="text-2xl font-bold text-gray-900">Home</h1>
       </div>
       <section>
         <h2 className="text-xl font-semibold text-gray-900 mb-4">

@@ -12,8 +12,7 @@ Route::get('/admin/events/{id}',[AdminController::class,'getevent']);
 Route::get('/admin/events/participants',[AdminController::class, 'getregisteredusers']);
 
 
-Route::prefix('admin/events')->group(function () {
-    Route::get('/', [AdminEventController::class, 'index']);               // List all events route 
+Route::prefix('admin/events')->group(function () {           // List all events route 
     Route::post('/', [AdminEventController::class, 'store']);              // Create new event route 
     Route::put('/{event}', [AdminEventController::class, 'update']);       // Update event route 
     Route::delete('/{event}', [AdminEventController::class, 'destroy']);   // Delete event route 

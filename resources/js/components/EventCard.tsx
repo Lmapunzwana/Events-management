@@ -8,7 +8,7 @@ interface EventCardProps {
   date: Date;
   location: string;
   description: string;
-  imageUrl: string;
+  image_path: string;
   isRegistered?: boolean;
 }
 
@@ -18,13 +18,13 @@ export function EventCard({
   date,
   location,
   description,
-  imageUrl,
+  image_path,
   isRegistered
 }: EventCardProps) {
   return (
     <Link href={route('event-details', { id })} className="block transition-shadow hover:shadow-md">
       <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-        <img src={imageUrl} alt={title} className="w-full h-48 object-cover" />
+        <img src={image_path} alt={title} className="w-full h-48 object-cover" />
         <div className="p-6">
           <h3 className="text-xl font-semibold text-gray-900">{title}</h3>
           <div className="mt-2 space-y-2">
