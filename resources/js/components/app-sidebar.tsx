@@ -15,12 +15,12 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Users',
-        href: '/users',
+        href: '/dashboard/users',
         icon: Users,
     },
     {
         title: 'Events',
-        href: '/events',
+        href: '/dashboard/events',
         icon: Calendar,
     },
 ];

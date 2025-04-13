@@ -36,6 +36,10 @@ Route::get('/events/{id}', function () {
     return Inertia::render('EventDetails');
 })->name('event-details');
 
+Route::get('/dashboard/events', function () {
+    return Inertia::render('DashboardEvents');
+})->name('dashboard-events');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');

@@ -1,87 +1,133 @@
-import { type SharedData } from '@/types';
+import { useEffect, useState } from 'react';
 import { Head, Link, usePage } from '@inertiajs/react';
-import { CalendarIcon, UsersIcon, BellIcon, CheckCircleIcon } from 'lucide-react';
-import { PlusIcon } from 'lucide-react';
+import axios from 'axios';
+import { Search } from 'lucide-react';
+import { type SharedData } from '@/types';
 import { EventCard } from '../components/EventCard';
-import { useNavigate } from 'react-router-dom';
+
+interface EventCardProps {
+  id: number;
+  title: string;
+  date: Date;
+  location: string;
+  description: string;
+  image_path: string;
+  isRegistered?: boolean;
+}
 
 export default function Home() {
-    const { auth } = usePage<SharedData>().props;
-    const upcomingEvents = [{
-        title: 'Tech Conference 2024',
-        date: new Date('2024-03-15T09:00:00'),
-        location: 'National Sports Stadium, HRE',
-        description: 'Annual technology conference featuring industry leaders.',
-        imageUrl: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3'
-      }, {
-        title: 'Music Festival',
-        date: new Date('2024-04-20T15:00:00'),
-        location: 'Harare Sports Center, HRE',
-        description: 'Three-day music festival with top artists.',
-        imageUrl: 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?ixlib=rb-4.0.3'
-      }];
-      const registeredEvents = [{
-        title: 'Design Workshop',
-        date: new Date('2024-03-01T13:00:00'),
-        location: 'Online',
-        description: 'Interactive workshop on UI/UX design principles.',
-        imageUrl: 'https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3',
-        isRegistered: true
-      }];
+  const { auth } = usePage<SharedData>().props;
 
-    return (
-        <>
-            <div className="flex min-h-screen flex-col items-center bg-[#FDFDFC] p-6 text-[#1b1b18] lg:justify-center lg:p-8">
-                <header className="mb-6 w-full max-w-[335px] text-sm not-has-[nav]:hidden lg:max-w-4xl">
-                    <nav className="flex items-center justify-end gap-4">
-                        {auth.user ? (
-                            <Link
-                                href={route('dashboard')}
-                                className="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a]"
-                            >
-                                Dashboard
-                            </Link>
-                        ) : (
-                            <>
-                                <Link
-                                    href={route('login')}
-                                    className="inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035]"
-                                >
-                                    Log in
-                                </Link>
-                                <Link
-                                    href={route('register')}
-                                    className="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a]"
-                                >
-                                    Register
-                                </Link>
-                            </>
-                        )}
-                    </nav>
-                </header>
-                <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Home</h1>
-      </div>
-      <section>
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">
-          Registered Events
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {registeredEvents.map(event => <EventCard key={event.title} {...event} />)}
-        </div>
-      </section>
-      <section>
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">
-          Upcoming Events
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {upcomingEvents.map(event => <EventCard key={event.title} {...event} />)}
-        </div>
-      </section>
-    </main>;
-                <div className="hidden h-14.5 lg:block"></div>
-            </div>
-        </>
+  const [searchQuery, setSearchQuery] = useState('');
+  const [upcomingEvents, setUpcomingEvents] = useState<EventCardProps[]>([]);
+  const [registeredEvents, setRegisteredEvents] = useState<EventCardProps[]>([]);
+
+  useEffect(() => {
+    // Fetch upcoming events
+    axios.get('/admin/events')
+      .then(res => {
+        const events = res.data.data.map((event: any) => ({
+          ...event,
+          date: new Date(event.date + 'T' + (event.time ?? '00:00')),
+        }));
+        setUpcomingEvents(events);
+      });
+
+    // Fetch registered events (using same endpoint, filter by flag)
+    axios.get('/admin/events')
+      .then(res => {
+        const events = res.data.data
+          .filter((event: any) => event.is_registered)
+          .map((event: any) => ({
+            ...event,
+            isRegistered: true,
+            date: new Date(event.date + 'T' + (event.time ?? '00:00')),
+          }));
+        setRegisteredEvents(events);
+      });
+  }, []);
+
+  const filterEvents = (events: EventCardProps[]) =>
+    events.filter(event =>
+      event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      event.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      event.description.toLowerCase().includes(searchQuery.toLowerCase())
     );
+
+  return (
+    <>
+      <Head title="Home" />
+      <div className="flex min-h-screen flex-col items-center bg-[#FDFDFC] p-6 text-[#1b1b18] lg:justify-center lg:p-8">
+        <header className="mb-6 w-full max-w-[335px] text-sm not-has-[nav]:hidden lg:max-w-4xl">
+          <nav className="flex items-center justify-end gap-4">
+            {auth.user ? (
+              <Link
+                href={route('dashboard')}
+                className="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a]"
+              >
+                Dashboard
+              </Link>
+            ) : (
+              <>
+                <Link
+                  href={route('login')}
+                  className="inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035]"
+                >
+                  Log in
+                </Link>
+                <Link
+                  href={route('register')}
+                  className="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a]"
+                >
+                  Register
+                </Link>
+              </>
+            )}
+          </nav>
+        </header>
+
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+          <div className="flex justify-between items-center mb-8">
+            <h1 className="text-2xl font-bold text-gray-900">Home</h1>
+            <div className="relative w-full max-w-xs">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search events..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+          </div>
+
+          {/* Registered Events */}
+          <section>
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">
+              Registered Events
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+              {filterEvents(registeredEvents).map(event => (
+                <EventCard key={event.id} {...event} />
+              ))}
+            </div>
+          </section>
+
+          {/* Upcoming Events */}
+          <section>
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">
+              Upcoming Events
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filterEvents(upcomingEvents).map(event => (
+                <EventCard key={event.id} {...event} />
+              ))}
+            </div>
+          </section>
+        </main>
+
+        <div className="hidden h-14.5 lg:block"></div>
+      </div>
+    </>
+  );
 }
