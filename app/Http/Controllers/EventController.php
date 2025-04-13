@@ -9,6 +9,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
+use Carbon\Carbon;
+
 {
     public function index(){
         $today = Carbon::today();
@@ -19,6 +21,14 @@ class EventController extends Controller
             'events' => $events,
             'registeredEvents' => $registeredEvents
         ]);
+
+        // now , showing the upcoming events in our project
+        //we will be using Carbon (already included with Laravel) to get the current date and only shows events that are today or in the future, sorted by date.
+
+            $today = Carbon::today();
+            $events = Event::whereDate('date', '>=', $today)->orderBy('date')->get();
+            return view('events.index', compact('events'));
+        
     }
 
     public function api() {

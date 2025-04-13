@@ -2,6 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\AdminController;
+
+//Routing fro getting all events, specific event and users who registered for an event
+Route::get('/get_events',[AdminController::class, 'getevents']);
+Route::get('/get_event{id}',[AdminController::class,'getevent']);
+Route::get('/get_registered_participants',[AdminController::class, 'getregisteredusers']);
 
 Route::get('/', function () {
     return Inertia::render('home');
