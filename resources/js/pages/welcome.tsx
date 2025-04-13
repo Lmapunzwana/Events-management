@@ -51,7 +51,7 @@ export default function Welcome() {
               perfect platform for event organizers and attendees.
             </p>
             <div className="mt-10">
-              <Link href="/home" className="px-8 py-3 rounded-md bg-blue-600 text-white text-lg font-medium hover:bg-blue-700 transition-colors">
+              <Link href={route('home-ls')} className="px-8 py-3 rounded-md bg-blue-600 text-white text-lg font-medium hover:bg-blue-700 transition-colors">
                 Get Started
               </Link>
             </div>
