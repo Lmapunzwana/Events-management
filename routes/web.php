@@ -5,6 +5,8 @@ use Inertia\Inertia;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminEventController;
+use App\Http\Controllers\RegistrationController;
+
 
 //Routing fro getting all events, specific event and users who registered for an event
 Route::get('/admin/events',[AdminController::class, 'getevents']);
@@ -55,4 +57,14 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
     Route::resource('events', AdminEventController::class)->except(['show']);
     Route::get('events/{event}/participants', [AdminEventController::class, 'participants'])
         ->name('admin.events.participants');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/events', [EventController::class, 'index'])->name('events.index');
+    Route::post('/register/{event}', [RegistrationController::class, 'store'])->name('register.event');
+    Route::get('/my-events', [RegistrationController::class, 'myEvents'])->name('my.events');
+});
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::resource('/admin/events', EventController::class)->except(['index']);
 });

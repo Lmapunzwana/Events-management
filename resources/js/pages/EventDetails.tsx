@@ -7,18 +7,17 @@ import { usePage, Link, router } from '@inertiajs/react';
 
 export default function EventDetails() {
   const { auth } = usePage<SharedData>().props;
-  const { id } = useParams();
+  const urlParts = window.location.pathname.split('/');
+  const id = urlParts[urlParts.length - 1]
   const [event, setEvent] = useState<any | null>(null);
   const [isRegistered, setIsRegistered] = useState(false);
   const [loading, setLoading] = useState(true);
 
   // Fetch event data from backend
   useEffect(() => {
-    fetch(`/admin/events/${parseInt('1')}`)
+    fetch(`/admin/events/${parseInt(id)}`)
       .then(res => res.json())
       .then(data => {
-        console.log(id)
-        console.log(data);
         setEvent(data);
         setIsRegistered(data.is_registered);
         setLoading(false);
@@ -32,7 +31,7 @@ export default function EventDetails() {
   const handleRegister = () => {
     if (!auth.user) return alert('Please log in to register.');
 
-    router.post(`/events/${id}/register`, {}, {
+    router.post(`/register/${id}`, {}, {
       onSuccess: () => setIsRegistered(true),
       onError: () => alert('Registration failed. Please try again.'),
     });

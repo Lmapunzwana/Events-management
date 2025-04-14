@@ -13,14 +13,6 @@ return new class extends Migration
     {
         Schema::create('registrations', function (Blueprint $table) {
             $table->id();
-            $table->time('Time')->nullable();
-            $table->date('Event_Date')->nullable();
-            $table->string('Location');
-            $table->string('user_id');
-            $table->string('events_id');
-            $table->string('Event_Description');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('events_id')->references('id')->on('events')->onDelete('cascade');
             $table->timestamps();
         });
     }

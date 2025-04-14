@@ -20,4 +20,10 @@ class Event extends Model
     {
         return $this->belongsToMany(User::class, 'registrations')->withTimestamps();
     }
+
+    public function registrations()
+    {
+        return $this->hasMany(\App\Models\Registration::class, 'event_id');
+    }
+
 }
