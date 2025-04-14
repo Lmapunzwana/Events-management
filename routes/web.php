@@ -11,7 +11,7 @@ use App\Http\Controllers\RegistrationController;
 //Routing fro getting all events, specific event and users who registered for an event
 Route::get('/admin/events',[AdminController::class, 'getevents']);
 Route::get('/admin/events/{id}',[AdminController::class,'getevent']);
-Route::get('/admin/events/participants',[AdminController::class, 'getregisteredusers']);
+Route::get('/admin/events/participants',[AdminController::class, 'getRegisteredEvents']);
 
 
 Route::prefix('admin/events')->group(function () {           // List all events route 
@@ -68,3 +68,5 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('/admin/events', EventController::class)->except(['index']);
 });
+
+

@@ -19,9 +19,18 @@ class AdminController extends Controller
         return response()->json($event);
     }
 
-    public function getregisteredusers($id)
+    public function getRegisteredEvents(Request $request)
     {
-        $event = event::with('participants')->find($id);
-        return response()->json($event->participants);
+        // Get the user ID from authenticated user
+        $userId = $request->user()->id;
+
+        // Get the list of event IDs the user is registered for
+        $eventIds = Registration::where('user_id', $userId)
+            ->pluck('events_id'); // Retrieve only the event IDs
+
+        // Get the details of those events
+        $events = Event::whereIn('id', $eventIds)->get();
+
+        return response()->json($events);
     }
 }

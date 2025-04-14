@@ -31,20 +31,28 @@ export default function Home() {
           date: new Date(event.date + 'T' + (event.time ?? '00:00')),
         }));
         setUpcomingEvents(events);
-      });
+      })
+      .catch((error) => console.error("Error fetching upcoming events:", error));
 
-    // Fetch registered events (using same endpoint, filter by flag)
-    axios.get('/admin/events')
+    // Fetch registered events
+    axios.get('/admin/events/registered') // Assuming you have a dedicated endpoint for registered events
       .then(res => {
-        const events = res.data.data
-          .filter((event: any) => event.is_registered)
-          .map((event: any) => ({
-            ...event,
-            isRegistered: true,
-            date: new Date(event.date + 'T' + (event.time ?? '00:00')),
-          }));
+        const events = Array.isArray(res.data.data) 
+          ? res.data.data.map((event: any) => ({
+              ...event,
+              isRegistered: true,
+              date: new Date(event.date + 'T' + (event.time ?? '00:00')),
+            }))
+          : [{
+              ...res.data.data,
+              isRegistered: true,
+              date: new Date(res.data.data.date + 'T' + (res.data.data.time ?? '00:00')),
+            }];
+          
         setRegisteredEvents(events);
-      });
+      })
+      .catch((error) => console.error("Error fetching registered events:", error));
+
   }, []);
 
   const filterEvents = (events: EventCardProps[]) =>
